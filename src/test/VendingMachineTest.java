@@ -14,14 +14,11 @@ public class VendingMachineTest {
 	private static final int QUARTER = 25;
 
 	@Test
-	public void vendingMachineAcceptsANickel() {
+	public void vendingMachineAcceptsValidCoins() {
 		VendingMachine vm = new VendingMachine();
-		assertEquals(true, vm.accept(NICKEL));
-		assertEquals(true, vm.accept(DIME));
-		assertEquals(true, vm.accept(QUARTER));
-		assertEquals(false, vm.accept(PENNIE));
-		
+		assertEquals(5, vm.add(NICKEL));
+		assertEquals(15, vm.add(DIME));
+		assertEquals(40, vm.add(QUARTER));
+		assertEquals(40, vm.add(PENNIE));
 	}
-	
-	
 }
