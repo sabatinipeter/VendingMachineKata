@@ -8,9 +8,9 @@ public class VendingMachine {
 	private static final String MESSAGE_THANK_YOU = "THANK YOU";
 	private static final String MESSAGE_INSERT_COINS = "INSERT COINS";
 	
-	public int add(int coin) {
-		if(coin == 5 || coin == 10 || coin == 25) {
-			return currentAmount += coin;
+	public int add(Coin coin) {
+		if(coin.getValue() == 5 || coin.getValue() == 10 || coin.getValue() == 25) {
+			return currentAmount += coin.getValue();
 		} else {
 			return currentAmount;	
 		}

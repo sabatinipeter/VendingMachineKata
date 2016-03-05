@@ -2,38 +2,39 @@ package test;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import com.Coin;
 import com.Product;
 import com.VendingMachine;
 
 public class VendingMachineTest {
 
-	private static final int PENNIE = 1;
-	private static final int NICKEL = 5;
-	private static final int DIME = 10;
-	private static final int QUARTER = 25;
+	private VendingMachine vendingMachine;
+	
+	@Before
+	public void setup() {
+		vendingMachine = new VendingMachine();
+	}
 
 	@Test
 	public void vendingMachineAcceptsValidCoins() {
-		VendingMachine vm = new VendingMachine();
-		assertEquals(5, vm.add(NICKEL));
-		assertEquals(15, vm.add(DIME));
-		assertEquals(40, vm.add(QUARTER));
-		assertEquals(40, vm.add(PENNIE));
+		assertEquals(5, vendingMachine.add(Coin.NICKEL));
+		assertEquals(15, vendingMachine.add(Coin.DIME));
+		assertEquals(40, vendingMachine.add(Coin.QUARTER));
+		assertEquals(40, vendingMachine.add(Coin.PENNIE));
 	}
 	
 	@Test
 	public void selectProduct() {
-		VendingMachine vm = new VendingMachine();
+		assertEquals("INSERT COINS", vendingMachine.select(Product.COLA));
 		
-		assertEquals("INSERT COINS", vm.select(Product.COLA));
+		vendingMachine.add(Coin.QUARTER);
+		vendingMachine.add(Coin.QUARTER);
+		vendingMachine.add(Coin.QUARTER);
+		vendingMachine.add(Coin.QUARTER);
 		
-		vm.add(QUARTER);
-		vm.add(QUARTER);
-		vm.add(QUARTER);
-		vm.add(QUARTER);
-		
-		assertEquals("THANK YOU", vm.select(Product.COLA));
+		assertEquals("THANK YOU", vendingMachine.select(Product.COLA));
 	}
 }
