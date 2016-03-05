@@ -20,19 +20,18 @@ public class VendingMachineTest {
 
 	@Test
 	public void acceptCoins() {
-		assertEquals(0, vendingMachine.getCurrentAmount());
 		
 		vendingMachine.add(Coin.NICKEL);
-		assertEquals(5, vendingMachine.getCurrentAmount());
+		assertEquals("5", vendingMachine.getDisplayMessage());
 		
 		vendingMachine.add(Coin.DIME);
-		assertEquals(15, vendingMachine.getCurrentAmount());
+		assertEquals("15", vendingMachine.getDisplayMessage());
 		
 		vendingMachine.add(Coin.QUARTER);
-		assertEquals(40, vendingMachine.getCurrentAmount());
+		assertEquals("40", vendingMachine.getDisplayMessage());
 		
 		vendingMachine.add(Coin.PENNY);
-		assertEquals(40, vendingMachine.getCurrentAmount());
+		assertEquals("40", vendingMachine.getDisplayMessage());
 	}
 	
 	@Test
@@ -42,25 +41,19 @@ public class VendingMachineTest {
 		assertEquals("INSERT COINS", vendingMachine.getDisplayMessage());
 		
 		vendingMachine.add(Coin.QUARTER);
-		assertEquals(25, vendingMachine.getCurrentAmount());
 		assertEquals("25", vendingMachine.getDisplayMessage());
 		
 		vendingMachine.add(Coin.QUARTER);
-		assertEquals(50, vendingMachine.getCurrentAmount());
 		assertEquals("50", vendingMachine.getDisplayMessage());
 		
 		vendingMachine.add(Coin.QUARTER);
-		assertEquals(75, vendingMachine.getCurrentAmount());
 		assertEquals("75", vendingMachine.getDisplayMessage());
 		
 		vendingMachine.add(Coin.QUARTER);
-		assertEquals(100, vendingMachine.getCurrentAmount());
 		assertEquals("100", vendingMachine.getDisplayMessage());
 		
 		vendingMachine.select(Product.COLA);
 		assertEquals("THANK YOU", vendingMachine.getDisplayMessage());
-		assertEquals(0, vendingMachine.getCurrentAmount());
-		
 		assertEquals("INSERT COINS", vendingMachine.getDisplayMessage());
 	}
 }
