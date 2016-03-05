@@ -3,6 +3,8 @@ package com;
 public class VendingMachine {
 
 	private int currentAmount;
+	private String displayMessage;
+	private boolean hasProductBeenSelected;
 	
 	private static final String MESSAGE_PRICE = "PRICE";
 	private static final String MESSAGE_THANK_YOU = "THANK YOU";
@@ -18,12 +20,22 @@ public class VendingMachine {
 		}
 	}
 
-	public String select(Product product) {
+	public void select(Product product) {
+		hasProductBeenSelected = true;
 		if(currentAmount < product.getValue()) {
-			return MESSAGE_PRICE + " " + product.getValue();
+			displayMessage = MESSAGE_PRICE + " " + product.getValue();
 		} else {
 			currentAmount -= product.getValue();
-			return MESSAGE_THANK_YOU;
+			displayMessage = MESSAGE_THANK_YOU;
+		}
+	}
+
+	public String getDisplayMessage() {
+		if(hasProductBeenSelected == true) {
+			hasProductBeenSelected = false;
+			return displayMessage;
+		} else {
+			return currentAmount > 0 ? String.valueOf(currentAmount) : MESSAGE_INSERT_COINS;
 		}
 	}
 }
