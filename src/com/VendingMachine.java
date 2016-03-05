@@ -12,17 +12,15 @@ public class VendingMachine {
 		return currentAmount;
 	}
 
-	public int add(Coin coin) {
+	public void add(Coin coin) {
 		if(coin.getValue() == 5 || coin.getValue() == 10 || coin.getValue() == 25) {
-			return currentAmount += coin.getValue();
-		} else {
-			return currentAmount;	
+			currentAmount += coin.getValue();
 		}
 	}
 
 	public String select(Product product) {
 		if(currentAmount < product.getValue()) {
-			return MESSAGE_INSERT_COINS;
+			return MESSAGE_PRICE + " " + product.getValue();
 		} else {
 			currentAmount -= product.getValue();
 			return MESSAGE_THANK_YOU;

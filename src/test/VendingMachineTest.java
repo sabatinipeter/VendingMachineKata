@@ -22,15 +22,22 @@ public class VendingMachineTest {
 	public void vendingMachineAcceptsValidCoins() {
 		assertEquals(0, vendingMachine.getCurrentAmount());
 		
-		assertEquals(5, vendingMachine.add(Coin.NICKEL));
-		assertEquals(15, vendingMachine.add(Coin.DIME));
-		assertEquals(40, vendingMachine.add(Coin.QUARTER));
-		assertEquals(40, vendingMachine.add(Coin.PENNIE));
+		vendingMachine.add(Coin.NICKEL);
+		assertEquals(5, vendingMachine.getCurrentAmount());
+		
+		vendingMachine.add(Coin.DIME);
+		assertEquals(15, vendingMachine.getCurrentAmount());
+		
+		vendingMachine.add(Coin.QUARTER);
+		assertEquals(40, vendingMachine.getCurrentAmount());
+		
+		vendingMachine.add(Coin.PENNY);
+		assertEquals(40, vendingMachine.getCurrentAmount());
 	}
 	
 	@Test
 	public void selectProduct() {
-		assertEquals("INSERT COINS", vendingMachine.select(Product.COLA));
+		assertEquals("PRICE 100", vendingMachine.select(Product.COLA));
 		
 		vendingMachine.add(Coin.QUARTER);
 		assertEquals(25, vendingMachine.getCurrentAmount());
