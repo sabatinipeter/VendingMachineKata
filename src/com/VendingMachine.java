@@ -1,6 +1,7 @@
 package com;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -17,12 +18,13 @@ public class VendingMachine {
 	
 	private Map<Coin, Integer> bank;
 	private List<Coin> returnCoins = new ArrayList<Coin>();
-	private List<Coin> enteredCoins = new ArrayList<Coin>();
 	
 	public void add(Coin coin) {
-		if(coin.getValue() == 5 || coin.getValue() == 10 || coin.getValue() == 25) {
+		if(Arrays.asList(VALID_COINS).contains(coin)) {
 			currentAmount += coin.getValue();
-			enteredCoins.add(coin);
+			
+			Integer currentBankCount = bank.get(coin);
+			bank.put(coin, currentBankCount + 1);
 		} else {
 			returnCoins.add(coin);
 		}
@@ -35,8 +37,6 @@ public class VendingMachine {
 		} else {
 			currentAmount -= product.getValue();
 			displayMessage = MESSAGE_THANK_YOU;
-			
-			//TODO: Add money to bank / reset the entered and return coins
 		}
 	}
 	
@@ -51,7 +51,8 @@ public class VendingMachine {
 	
 	public List<Coin> getChange() {
 		for (Coin coin : VALID_COINS) {
-			for (int i = 0; i < currentAmount / coin.getValue(); i++) {
+			int howMany = currentAmount / coin.getValue();
+			for (int i = 0; i < howMany; i++) {
 				Integer currentBankCount = bank.get(coin);
 				if(currentBankCount > 0) {
 					bank.put(coin, currentBankCount - 1);

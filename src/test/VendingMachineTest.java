@@ -20,10 +20,9 @@ public class VendingMachineTest {
 		vendingMachine = new VendingMachine();
 		
 		HashMap<Coin, Integer> bank = new HashMap<Coin, Integer>();
-		bank.put(Coin.QUARTER, 10);
-		bank.put(Coin.DIME, 10);
-		bank.put(Coin.NICKEL, 10);
-		bank.put(Coin.PENNY, 10);
+		bank.put(Coin.QUARTER, 5);
+		bank.put(Coin.DIME, 5);
+		bank.put(Coin.NICKEL, 5);
 		
 		vendingMachine.setBank(bank);
 	}
@@ -86,5 +85,21 @@ public class VendingMachineTest {
 			value += coin.getValue();
 		}
 		assertEquals(10, value);
+	}
+	
+	@Test
+	public void returnCoins() {
+		vendingMachine.add(Coin.QUARTER);
+		vendingMachine.add(Coin.DIME);
+		assertEquals("35", vendingMachine.getDisplayMessage());
+		
+		vendingMachine.getChange();
+		
+		int value = 0;
+		for (Coin coin : vendingMachine.getChange()) {
+			value += coin.getValue();
+		}
+		assertEquals(35, value);
+		assertEquals("INSERT COINS", vendingMachine.getDisplayMessage());
 	}
 }
