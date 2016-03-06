@@ -25,6 +25,13 @@ public class VendingMachineTest {
 		bank.put(Coin.NICKEL, 5);
 		
 		vendingMachine.setBank(bank);
+		
+		HashMap<Product, Integer> inventory = new HashMap<Product, Integer>();
+		inventory.put(Product.COLA, 1);
+		inventory.put(Product.CANDY, 1);
+		inventory.put(Product.CHIPS, 0);
+		
+		vendingMachine.setInventory(inventory);
 	}
 
 	@Test
@@ -101,5 +108,19 @@ public class VendingMachineTest {
 		}
 		assertEquals(35, value);
 		assertEquals("INSERT COINS", vendingMachine.getDisplayMessage());
+	}
+	
+	@Test
+	public void soldOut() {
+		vendingMachine.add(Coin.QUARTER);
+		vendingMachine.select(Product.CHIPS);
+		
+		assertEquals("SOLD OUT", vendingMachine.getDisplayMessage());
+		assertEquals("25", vendingMachine.getDisplayMessage());
+		
+		vendingMachine.add(Coin.QUARTER);
+		vendingMachine.select(Product.CHIPS);
+		
+		assertEquals("SOLD OUT", vendingMachine.getDisplayMessage());
 	}
 }

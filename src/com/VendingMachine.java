@@ -2,6 +2,7 @@ package com;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,10 +14,12 @@ public class VendingMachine {
 	
 	private static final Coin[] VALID_COINS = { Coin.QUARTER, Coin.DIME, Coin.NICKEL };
 	private static final String MESSAGE_PRICE = "PRICE";
+	private static final String MESSAGE_SOLD_OUT = "SOLD OUT";
 	private static final String MESSAGE_THANK_YOU = "THANK YOU";
 	private static final String MESSAGE_INSERT_COINS = "INSERT COINS";
 	
 	private Map<Coin, Integer> bank;
+	private Map<Product, Integer> inventory;
 	private List<Coin> returnCoins = new ArrayList<Coin>();
 	
 	public void add(Coin coin) {
@@ -32,11 +35,15 @@ public class VendingMachine {
 	
 	public void select(Product product) {
 		hasProductBeenSelected = true;
-		if(currentAmount < product.getValue()) {
-			displayMessage = MESSAGE_PRICE + " " + product.getValue();
+		if(inventory.get(product) > 0) {
+			if(currentAmount < product.getValue()) {
+				displayMessage = MESSAGE_PRICE + " " + product.getValue();
+			} else {
+				currentAmount -= product.getValue();
+				displayMessage = MESSAGE_THANK_YOU;
+			}
 		} else {
-			currentAmount -= product.getValue();
-			displayMessage = MESSAGE_THANK_YOU;
+			displayMessage = MESSAGE_SOLD_OUT;
 		}
 	}
 	
@@ -66,5 +73,9 @@ public class VendingMachine {
 	
 	public void setBank(Map<Coin, Integer> bank) {
 		this.bank = bank;
+	}
+
+	public void setInventory(HashMap<Product, Integer> inventory) {
+		this.inventory = inventory;
 	}
 }
