@@ -2,6 +2,8 @@ package test;
 
 import static org.junit.Assert.*;
 
+import java.util.HashMap;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,6 +18,14 @@ public class VendingMachineTest {
 	@Before
 	public void setup() {
 		vendingMachine = new VendingMachine();
+		
+		HashMap<Coin, Integer> bank = new HashMap<Coin, Integer>();
+		bank.put(Coin.QUARTER, 10);
+		bank.put(Coin.DIME, 10);
+		bank.put(Coin.NICKEL, 10);
+		bank.put(Coin.PENNY, 10);
+		
+		vendingMachine.setBank(bank);
 	}
 
 	@Test
@@ -55,5 +65,26 @@ public class VendingMachineTest {
 		vendingMachine.select(Product.COLA);
 		assertEquals("THANK YOU", vendingMachine.getDisplayMessage());
 		assertEquals("INSERT COINS", vendingMachine.getDisplayMessage());
+	}
+	
+	@Test
+	public void makeChange() {
+		int value = 0;
+		for (Coin coin : vendingMachine.getChange()) {
+			value += coin.getValue();
+		}
+		assertEquals(0, value);
+		
+		vendingMachine.add(Coin.QUARTER);
+		vendingMachine.add(Coin.QUARTER);
+		vendingMachine.add(Coin.QUARTER);
+		
+		vendingMachine.select(Product.CANDY);
+		
+		value = 0;
+		for (Coin coin : vendingMachine.getChange()) {
+			value += coin.getValue();
+		}
+		assertEquals(10, value);
 	}
 }
