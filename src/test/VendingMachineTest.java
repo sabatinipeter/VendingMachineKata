@@ -18,25 +18,10 @@ public class VendingMachineTest {
 	@Before
 	public void setup() {
 		vendingMachine = new VendingMachine();
-		
-		HashMap<Coin, Integer> bank = new HashMap<Coin, Integer>();
-		bank.put(Coin.QUARTER, 5);
-		bank.put(Coin.DIME, 5);
-		bank.put(Coin.NICKEL, 5);
-		
-		vendingMachine.setBank(bank);
-		
-		HashMap<Product, Integer> inventory = new HashMap<Product, Integer>();
-		inventory.put(Product.COLA, 1);
-		inventory.put(Product.CANDY, 1);
-		inventory.put(Product.CHIPS, 0);
-		
-		vendingMachine.setInventory(inventory);
 	}
-
+	
 	@Test
 	public void acceptCoins() {
-		
 		vendingMachine.add(Coin.NICKEL);
 		assertEquals("5", vendingMachine.getDisplayMessage());
 		
@@ -52,6 +37,14 @@ public class VendingMachineTest {
 	
 	@Test
 	public void selectProduct() {
+		HashMap<Coin, Integer> bank = new HashMap<Coin, Integer>();
+		bank.put(Coin.NICKEL, 1);
+		vendingMachine.setBank(bank);
+		
+		HashMap<Product, Integer> inventory = new HashMap<Product, Integer>();
+		inventory.put(Product.COLA, 1);
+		vendingMachine.setInventory(inventory);
+		
 		vendingMachine.select(Product.COLA);
 		assertEquals("PRICE 100", vendingMachine.getDisplayMessage());
 		assertEquals("INSERT COINS", vendingMachine.getDisplayMessage());
@@ -75,6 +68,15 @@ public class VendingMachineTest {
 	
 	@Test
 	public void makeChange() {
+		HashMap<Coin, Integer> bank = new HashMap<Coin, Integer>();
+		bank.put(Coin.DIME, 1);
+		bank.put(Coin.NICKEL, 1);
+		vendingMachine.setBank(bank);
+		
+		HashMap<Product, Integer> inventory = new HashMap<Product, Integer>();
+		inventory.put(Product.CANDY, 1);
+		vendingMachine.setInventory(inventory);
+		
 		int value = 0;
 		for (Coin coin : vendingMachine.getChange()) {
 			value += coin.getValue();
@@ -82,8 +84,13 @@ public class VendingMachineTest {
 		assertEquals(0, value);
 		
 		vendingMachine.add(Coin.QUARTER);
+		assertEquals("25", vendingMachine.getDisplayMessage());
+		
 		vendingMachine.add(Coin.QUARTER);
+		assertEquals("50", vendingMachine.getDisplayMessage());
+		
 		vendingMachine.add(Coin.QUARTER);
+		assertEquals("75", vendingMachine.getDisplayMessage());
 		
 		vendingMachine.select(Product.CANDY);
 		
@@ -122,5 +129,44 @@ public class VendingMachineTest {
 		vendingMachine.select(Product.CHIPS);
 		
 		assertEquals("SOLD OUT", vendingMachine.getDisplayMessage());
+	}
+	
+	@Test 
+	public void exactChangeOnly() {
+		HashMap<Product, Integer> inventory = new HashMap<Product, Integer>();
+		inventory.put(Product.COLA, 1);
+		vendingMachine.setInventory(inventory);
+		
+		vendingMachine.setBank(new HashMap<Coin, Integer>());
+		
+		String displayMessage = vendingMachine.getDisplayMessage();
+		assertEquals("EXACT CHANGE ONLY", displayMessage);
+		
+		HashMap<Coin, Integer> bank = new HashMap<Coin, Integer>();
+		bank.put(Coin.NICKEL, 1);
+		vendingMachine.setBank(bank);
+		
+		displayMessage = vendingMachine.getDisplayMessage();
+		assertEquals("INSERT COINS", displayMessage);
+		
+		inventory = new HashMap<Product, Integer>();
+		inventory.put(Product.CANDY, 1);
+		vendingMachine.setInventory(inventory);
+		
+		bank = new HashMap<Coin, Integer>();
+		bank.put(Coin.NICKEL, 1);
+		bank.put(Coin.DIME, 0);
+		vendingMachine.setBank(bank);
+		
+		displayMessage = vendingMachine.getDisplayMessage();
+		assertEquals("EXACT CHANGE ONLY", displayMessage);
+		
+		bank = new HashMap<Coin, Integer>();
+		bank.put(Coin.NICKEL, 1);
+		bank.put(Coin.DIME, 1);
+		vendingMachine.setBank(bank);
+		
+		displayMessage = vendingMachine.getDisplayMessage();
+		assertEquals("INSERT COINS", displayMessage);
 	}
 }
