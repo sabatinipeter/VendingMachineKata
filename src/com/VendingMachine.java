@@ -3,11 +3,9 @@ package com;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 public class VendingMachine {
 	
@@ -81,36 +79,33 @@ public class VendingMachine {
 	
 	private boolean showExactChangeMessage() {
 		for (Entry<Product, Integer> inventory : inventory.entrySet()) {
-			
-			int productPrice = inventory.getKey().getValue();
 			int productQuantity = inventory.getValue();
-			
-			if(productQuantity > 0) {
-				int price = productPrice;
-				while(price > 0) {
-					for (Coin coin : VALID_COINS) {
-						int reminder = price % coin.getValue();
-						if(reminder > 0) {
-							for (Coin validCoin : VALID_COINS) {
-								int change = reminder - validCoin.getValue();
-								if(change < 0 && validCoin.getValue() <= coin.getValue()) {
-									for (Coin coin2 : VALID_COINS) {
-										if(Math.abs(change) == coin2.getValue()) {
-											Integer currentBankCount = bank.get(coin2) == null ? 0 : bank.get(coin2);
-											if(currentBankCount == 0) {
-												return true;
-											}
-										}
-									}
-								}
+			if(productQuantity == 0) {
+				continue;
+			}
+			int productPrice = inventory.getKey().getValue();
+			while(productPrice > 0) {
+				for (Coin coin : VALID_COINS) {
+					int remainder = productPrice % coin.getValue();
+					if(remainder > 0) {
+						int change = remainder - coin.getValue();
+						if(change < 0) {
+							if(!bankCoversAmount(Math.abs(change))) {
+								return true;
 							}
 						}
 					}
-					price -= VALID_COINS[0].getValue();
 				}
-			} 
+				productPrice -= VALID_COINS[0].getValue();
+			}
 		}
 		return false;
+	}
+
+	private boolean bankCoversAmount(int amount) {
+		Coin coin = Coin.getCoinByValue(amount);
+		Integer currentBankCount = bank.get(coin) == null ? 0 : bank.get(coin);
+		return currentBankCount > 0 ? true : false;
 	}
 
 	public void setBank(Map<Coin, Integer> bank) {

@@ -13,4 +13,13 @@ public enum Coin {
 	public int getValue() {
 		return this.value;
 	}
+
+	public static Coin getCoinByValue(int value) {
+		for (Coin coin : Coin.values()) {
+			if (coin.value == value) {
+				return coin;
+			}
+		}
+		return null;
+	}
 }
